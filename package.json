@@ -1,0 +1,30 @@
+{
+  "name": "npm-package",
+  "version": "1.0.0",
+  "description": "dependence packages",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bismay7978/Block-chain-dev.git"
+  },
+  "keywords": [
+    "package.json",
+    "E_voting_system"
+  ],
+  "author": "E_voting_system project team (GCEK)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bismay7978/Block-chain-dev/issues"
+  },
+  "homepage": "https://github.com/Bismay7978/Block-chain-dev#readme",
+  "devDependencies": {
+    "bootstrap": "4.6.0",
+    "truffle": "5.1.66"
+  }
+}
