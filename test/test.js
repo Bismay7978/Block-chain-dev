@@ -1,6 +1,6 @@
 const e_voting = artifacts.require('E_voting_system');
 
-contract('E_voting_system', (account) => {
+contract('E_voting_system', (accounts) => {
     before(async () => {
         this.e_vot = await e_voting.deployed();
     })
@@ -11,17 +11,35 @@ contract('E_voting_system', (account) => {
         assert.notEqual(address, '');
         assert.notEqual(address, null);
         assert.notEqual(address, undefined);
+        console.log(accounts);
     })
-    it('change state', async () => {
-        const result = await this.e_vot.changeState();
-        // const state = result.logs[0].args
-        console.log(result);
+    it('change state_1', async () => {
+        try {
+            const result = await this.e_vot.changeState({ from: accounts[1] });
+            // const state = result.logs[0].args
+            console.log(result);
+        }
+        catch (error) {
+            error = String(error);
+            index = error.indexOf("Reason given:");
+            index += 13;
+            submsg = error.substring(index, error.length - 1);
+            console.log(submsg);
+        }
     })
 
+
     it('Voting', async () => {
-        const result = await this.e_vot.vote("ranabismaykumar@gmail.com", 123456789012, 0).then((msg) => {
-            console.log(msg);
-        });
-        console.log(result);
+        try {
+            const result = await this.e_vot.vote("ranabismaykumar@gmail.com", 123456789012, 0);
+            console.log(result);
+        }
+        catch (error) {
+            error = String(error);
+            index = error.indexOf("Reason given:");
+            index += 13;
+            submsg = error.substring(index, error.length - 1);
+            console.log(submsg);
+        }
     })
 })

@@ -44647,12 +44647,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x09a5ee149408B338841a03f92E8a56AB021D0d99",
-      "transactionHash": "0xd2c160bbd85c5a860fa7788262f2eab7d604f63d5cebde68bb0b4b597c452dba"
+      "address": "0x8292eD8Aa166537D3ee743EE5385Ef7ab5230e18",
+      "transactionHash": "0x92fc83a73d7ffd20a5d13e3dccec886d6d12da984579c82ec83d9b96c0a7ad89"
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2022-06-05T08:50:09.418Z",
+  "updatedAt": "2022-06-08T14:39:10.463Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Implements voting process along with vote delegation",

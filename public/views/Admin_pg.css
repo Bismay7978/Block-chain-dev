@@ -1,0 +1,74 @@
+.admin {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh !important;
+    box-sizing: border-box;
+    background-color: rgba(179, 187, 198, 0.623);
+}
+
+.load_txt {
+    width: 100%;
+    height: 50%;
+}
+
+.show_btn {
+    text-align: center;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 16px;
+}
+
+.show {
+    width: 100%;
+    margin-left: 5px;
+}
+
+.load {
+    width: 100%;
+    height: 50%;
+}
+
+.tabs {
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+    padding: auto;
+}
+
+.container {
+    width: 100%;
+    height: 70%;
+}
+
+a {
+    color: rgba(68, 68, 173, 0.721) !important;
+    background-color: rgba(166, 185, 240, 0.72) !important;
+    padding: 3px;
+}
+
+li {
+    padding: 3px;
+}
+
+.active {
+    color: rgb(255, 255, 255) !important;
+    background-color: rgba(68, 68, 173, 0.721) !important;
+}
+
+.tab-pane {
+    height: 100%;
+    padding: 5px;
+}
+
+@media screen and (max-width: 576px) {
+    .tabs {
+        width: 40%;
+    }
+}
