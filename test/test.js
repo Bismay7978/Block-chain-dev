@@ -34,7 +34,7 @@ contract('E_voting_system', (accounts) => {
             const result = await this.e_vot.vote("ranabismaykumar@gmail.com", 123456789012, 0);
             console.log(result);
         }
-        catch (error) {
+        catch (error) { //test
             error = String(error);
             index = error.indexOf("Reason given:");
             index += 13;
