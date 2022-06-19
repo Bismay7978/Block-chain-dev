@@ -46392,12 +46392,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x2bFfAAf7DFdA1869Eb18B87AC3B959ed8cD04888",
-      "transactionHash": "0x9c05552de5321ac75c1d2f231087dd852e74100507896598750876d012a1c3d3"
+      "address": "0xca4Ac4EA47A48D50d4d3CBD1e6da8FdE15e76011",
+      "transactionHash": "0x008f8cfe894d1213b106bc0c2106aa6b40142ea5d4c0f3cb08636ce90b20c0b9"
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2022-06-16T09:43:26.644Z",
+  "updatedAt": "2022-06-19T19:02:43.603Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Implements voting process along with vote delegation",
