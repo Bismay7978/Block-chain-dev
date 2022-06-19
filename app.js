@@ -7,6 +7,9 @@ app.use('/css', express.static(path.join(__dirname, './node_modules/bootstrap/di
 app.use('/js', express.static(path.join(__dirname, './node_modules/bootstrap/dist/js')))
 app.use('/js', express.static(path.join(__dirname, './node_modules/jquery/dist')))
 app.use('/js', express.static(path.join(__dirname, './node_modules/bootstrap/js/src')))
+app.use('/js', express.static(path.join(__dirname, './node_modules/web3/dist')))
+app.use('/js', express.static(path.join(__dirname, './node_modules/@truffle/contract/dist')))
+app.use('/json', express.static(path.join(__dirname, './build/contracts')))
 app.use('/static', express.static(path.join(__dirname, './public')))
 
 app.get("/", (req, res) => {

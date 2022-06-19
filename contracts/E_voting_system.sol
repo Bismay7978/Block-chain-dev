@@ -326,6 +326,14 @@ contract E_voting_system {
             chair_pass == stringToBytes32(pass);
     }
 
+    function getProposal(string memory area)
+        public
+        view
+        returns (Proposal[] memory)
+    {
+        return area_proposal[stringToBytes32(area)];
+    }
+
     function stringToBytes32(string memory source)
         private
         pure

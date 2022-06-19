@@ -7,100 +7,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./static/views/Admin_pg.css">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <!-- <script src="https://unpkg.com/@popperjs/core@2"></script> -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
-    <title>Document</title>
+    <script src="./js/web3.min.js"></script>
+    <script src="./js/truffle-contract.min.js"></script>
+    <title>Admin Dash</title>
 </head>
 
-<body class="d-flex align-items-center justify-content-center admin">
+<body class="">
 
     <!-- <div class="">
         <h2>Loading.......</h2>
     </div> -->
     <!-- Nav tabs -->
-    <div class="container d-flex flex-sm-column flex-row justify-content-between">
-        <div class="tabs shadow p-1 mb-5 bg-white rounded">
-            <ul class="nav nav-tabs flex-column flex-sm-row nav-fill font-weight-bold" id="admin_tabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="CandidateDetails-tab" data-toggle="tab" href="#CandidateDetails"
-                        role="tab" aria-controls="CandidateDetails" aria-selected="true">Candidate Details</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="add-candidate-tab" data-toggle="tab" href="#add-candidate" role="tab"
-                        aria-controls="add-candidate" aria-selected="false">Add Candidate</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
-                        aria-controls="register" aria-selected="false">Register</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab"
-                        aria-controls="status" aria-selected="false">Change Status</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="LogOut-tab" href="/logout" style="cursor:pointer;">Log Out</a>
-                </li>
-            </ul>
+    <h2 class="text-center">Admin Dashboard</h2>
+    <div class="d-flex align-items-center justify-content-center admin">
+        <div class="container d-flex flex-sm-column flex-row justify-content-between">
+            <div class="tabs shadow p-1 mb-5 bg-white rounded">
+                <ul class="nav nav-tabs flex-column flex-sm-row nav-fill font-weight-bold" id="admin_tabs"
+                    role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="CandidateDetails-tab" data-toggle="tab" href="#CandidateDetails"
+                            role="tab" aria-controls="CandidateDetails" aria-selected="true">Candidate Details</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="add-candidate-tab" data-toggle="tab" href="#add-candidate" role="tab"
+                            aria-controls="add-candidate" aria-selected="false">Add Candidate</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                            aria-controls="register" aria-selected="false">Register</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab"
+                            aria-controls="status" aria-selected="false">Change Status</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="result-tab" data-toggle="tab" href="#result" role="tab"
+                            aria-controls="result" aria-selected="false">Show Result</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="LogOut-tab" href="/logout" style="cursor:pointer;">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content content shadow bg-white rounded">
+                <div class="tab-pane active" id="CandidateDetails" role="tabpanel"
+                    aria-labelledby="CandidateDetails-tab">
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="form-group flex-fill">
+                            <label for="Area_list_1">Choose Area</label>
+                            <select class="custom-select mr-2" id="Area_list_1">
+                                <option selected>Select Area</option>
+                            </select>
+                        </div>
+                        <div class="show_btn">
+                            <button type="button" class="btn btn-primary show"
+                                style="height: 38px; margin-bottom: 2px; bottom: 2px;">Show</button>
+                        </div>
+
+                    </div>
+                    <div class="container">
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Party</th>
+                                    <th scope="col">Vote Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>BJD</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>BJP</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Larry</td>
+                                    <td>CONG</td>
+                                    <td>0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="add-candidate" role="tabpanel" aria-labelledby="add-candidate-tab">
+                    <form>
+                        <div class="form-group">
+                            <label for="Proposal">Proposal Name</label>
+                            <input type="text" class="form-control" id="Proposal">
+                        </div>
+                        <div class="form-group">
+                            <label for="Party_list">Choose Party</label>
+                            <select class="custom-select" id="Party_list">
+                                <option selected>Select Party</option>
+                                <option value="BJD">BJD</option>
+                                <option value="BJP">BJP</option>
+                                <option value="CONG">CONG</option>
+                                <option value="COMUNI">COMUNI</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Area_list_2">Choose Area</label>
+                            <select class="custom-select" id="Area_list_2">
+                                <option selected>Select Area</option>
+                                <option value="remuna">Remuna</option>
+                                <option value="balasore">Balasore</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="prop_add">ADD</button>
+                    </form>
+                </div>
+                <div class="tab-pane" id="register" role="tabpanel" aria-labelledby="register-tab">
+                    <div class="container">
+                        <div class="reg_vot mt-2 p-2">
+                            <label class="voter_address">address</label>
+                            <button class="btn btn-success voter_approve_btn">Approve</button>
+                            <button class="btn btn-danger voter_reject">Reject</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="status" role="tabpanel" aria-labelledby="status-tab">
+                    Change Status
+                </div>
+                <div class="tab-pane" id="result" role="tabpanel" aria-labelledby="result-tab">
+                    Result
+                </div>
+            </div>
         </div>
-
-        <div class="tab-content content shadow bg-white rounded">
-            <div class="tab-pane active" id="CandidateDetails" role="tabpanel" aria-labelledby="CandidateDetails-tab">
-                <div class="d-flex flex-row justify-content-between">
-                    <div class="form-group flex-fill">
-                        <label for="Area_list_1">Choose Area</label>
-                        <select class="custom-select mr-2" id="Area_list_1">
-                            <option selected>Select Area</option>
-                        </select>
-                    </div>
-                    <div class="show_btn">
-                        <button type="button" class="btn btn-primary show"
-                            style="height: 38px; margin-bottom: 2px; bottom: 2px;">Show</button>
-                    </div>
-
-                </div>
-                <div class="container">
-
-                </div>
-            </div>
-            <div class="tab-pane" id="add-candidate" role="tabpanel" aria-labelledby="add-candidate-tab">
-                <form method="post" action="/add_prop">
-                    <div class="form-group">
-                        <label for="Proposal">Proposal Name</label>
-                        <input type="text" class="form-control" id="Proposal">
-                    </div>
-                    <div class="form-group">
-                        <label for="Party_list">Choose Party</label>
-                        <select class="custom-select" id="Party_list">
-                            <option selected>Select Party</option>
-                            <option value="BJD">BJD</option>
-                            <option value="BJP">BJP</option>
-                            <option value="CONG">CONG</option>
-                            <option value="COMUNI">COMUNI</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="Area_list_2">Choose Area</label>
-                        <select class="custom-select" id="Area_list_2">
-                            <option selected>Select Area</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">ADD</button>
-                </form>
-            </div>
-            <div class="tab-pane" id="register" role="tabpanel" aria-labelledby="register-tab">
-                <div class="container">
-                    <div class="reg_vot mt-2 p-2">
-                        <label class="voter_address">address</label>
-                        <button class="btn btn-success voter_approve_btn">Approve</button>
-                        <button class="btn btn-danger voter_reject">Reject</button>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="status" role="tabpanel" aria-labelledby="status-tab">Change Status</div>
-        </div>
-    </div>
+        <script src="./static/views/admin.js"></script>
 </body>
 
 </html>

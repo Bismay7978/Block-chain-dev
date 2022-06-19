@@ -1,10 +1,12 @@
-.admin {
+.admin,
+body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100vh !important;
     box-sizing: border-box;
     background-color: rgba(179, 187, 198, 0.623);
+    overflow: hidden;
 }
 
 .load_txt {
