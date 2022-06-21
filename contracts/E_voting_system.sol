@@ -101,10 +101,7 @@ contract E_voting_system {
         );
         require(voters[voter].is_reg, "voter is not register yet");
         require(!voters[voter].voted, "The voter already voted.");
-        require(
-            voters[voter].is_authorized == false,
-            "The voter is alredy authorized"
-        );
+        require(!voters[voter].is_authorized,"The voter is alredy authorized");
         _;
     }
 
@@ -308,12 +305,17 @@ contract E_voting_system {
         else return (false, 0, "");
     }
 
-    function unreg_voters() public view returns (address[] memory) {
+    function unauth_voters() public view returns (address[] memory address_list,Voter[] memory voter_detils) {
         require(
             msg.sender == chairperson,
             "Only Chair person have right to call this function"
         );
-        return voter_address;
+        address_list = new address[](voter_address.length);
+        voter_detils = new Voter[](voter_address.length);
+        for(uint i=0;i<voter_address.length;i++){
+            address_list[i] = voter_address[i];
+            voter_detils[i] = voters[voter_address[i]];
+        }
     }
 
     function chair_login(string memory email, string memory pass)
