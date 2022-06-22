@@ -1,3 +1,4 @@
+
 App = {
     loading: false,
     contracts: {},
@@ -63,36 +64,41 @@ App = {
     },
 
     add_prop_fun: async () => {
-        const name = $('#Proposal').val()
-        const party = $('#Party_list').val()
-        const area = $('#Area_list_2').val()
-        console.log(name, party, area);
-        web3.eth.getBalance(ethereum.selectedAddress, (err, balance) => {
-            if (err) {
-                window.alert("Somthing went wrong");
-                window.location("/admin");
+        if (App.state === 0) {
+            const name = $('#Proposal').val()
+            const party = $('#Party_list').val()
+            const area = $('#Area_list_2').val()
+            console.log(name, party, area);
+            web3.eth.getBalance(ethereum.selectedAddress, (err, balance) => {
+                if (err) {
+                    window.alert("Somthing went wrong");
+                    window.location("/admin");
+                }
+                this.balance = web3.utils.fromWei(balance, "ether")
+            });
+            if (!name || !party || !area) {
+                window.alert("Enter Valid Input")
             }
-            this.balance = web3.utils.fromWei(balance, "ether")
-        });
-        if (!name || !party || !area) {
-            window.alert("Enter Valid Input")
-        }
-        else if (this.balance != '0') {
-            try {
-                // web3.eth.sendTransaction({ 'from': App.accounts[0] })
-                await App.e_vot.addProposal(name, party, area, { 'from': ethereum.selectedAddress }).then(console.log);
+            else if (this.balance != '0') {
+                try {
+                    // web3.eth.sendTransaction({ 'from': App.accounts[0] })
+                    await App.e_vot.addProposal(name, party, area, { 'from': ethereum.selectedAddress }).then(console.log);
+                }
+                catch (error) {
+                    error = json(error);
+                    index = error.indexOf("Reason given:");
+                    index += 13;
+                    submsg = error.substring(index, error.length - 1);
+                    window.alert(submsg);
+                    console.log(submsg);
+                }
             }
-            catch (error) {
-                error = json(error);
-                index = error.indexOf("Reason given:");
-                index += 13;
-                submsg = error.substring(index, error.length - 1);
-                window.alert(submsg);
-                console.log(submsg);
+            else {
+                window.alert("You don't have suficenent balance");
             }
         }
         else {
-            window.alert("You don't have suficenent balance");
+            window.alert("Registration fhase is over")
         }
     },
 
@@ -110,6 +116,83 @@ App = {
             content.addClass('d-flex')
         }
     },
+    get_unauth_voters: async () => {
+        App.unauth_voters = await App.e_vot.unauth_voters()
+        // console.log(App.unauth_voters[1].length + "v")
+    },
+    load_unauth_voters: async () => {
+        App.state = await App.e_vot.check_state()
+        App.state = App.state.toNumber()
+        console.log(App.state)
+        if (App.state === 0) {
+            App.get_unauth_voters()
+            // for (i = 0; i < App.unauth_voters[1].length; i++) {
+            //     if (!App.unauth_voters[1][i].is_authorized) {
+            //         adress = $("<label></label>")
+            //         div = $("<div></div>")
+            //         btn_ap = $("<button></button>")
+            //         btn_rej = $("<button></button>")
+            //         div.addClass("reg_vot mt-2 p-2")
+            //         div.attr('id', i)
+            //         adress.addClass("voter_address")
+            //         adress.text(App.unauth_voters[0][i])
+            //         btn_ap.addClass("btn btn-success voter_approve_btn ml-2")
+            //         btn_ap.text(Approve)
+            //         btn_rej.addClass("btn btn-danger voter_reject ml-2")
+            //         btn_rej.text(Reject)
+            //         div.append(adress, btn_ap, btn_rej)
+            //         container = $('#register')
+            //         container.append(div)
+            //     }
+            // }
+        }
+    },
+    load_result: async () => {
+        console.log(App.state)
+        if (App.state === 3) {
+            area = $(Area_list_3).val()
+            if (!area) {
+                window.alert("Please select valid area")
+            }
+            else {
+                winer = await App.e_vot.winnerNME_Vcount(area)
+                wn_tbody = $('#winer_tb')
+                wn_tbody.empty()
+                tr = $("<tr></tr>")
+                th = $("<th></th>").text(i + 1)
+                th.attr("scope", "row")
+                td_name = $("<td></td>").text(App.to_string(winer["name"]))
+                td_party = $("<td></td>").text(App.to_string(winer["party"]))
+                td_vcount = $("<td></td>").text(winer["voteCount"])
+                tr.append(th, td_name, td_party, td_vcount)
+                wn_tbody.append(tr)
+            }
+        }
+        else {
+            window.alert("voting phase not ended yet")
+        }
+    }
+    ,
+    load_state: async () => {
+        lable_state = $('#sts')
+        console.log(lable_state)
+        console.log(App.state)
+        lable_state.empty()
+        switch (App.state) {
+            case 0:
+                lable_state.text("Registration")
+                break
+            case 1:
+                lable_state.text("Validation")
+                break
+            case 2:
+                lable_state.text("Voting")
+                break
+            case 3:
+                lable_state.text("Voting is closed")
+        }
+    }
+    ,
     render: async () => {
         // Prevent double render
         if (App.loading) {
@@ -118,10 +201,9 @@ App = {
 
         // Update app loading state
         App.setLoading(true)
-
-        // Render Account
-        // $('#account').html(App.account)
-
+        await App.load_unauth_voters()
+        console.log(App.state)
+        await App.load_state()
         // Add events Tasks
 
         // Update loading state
@@ -157,22 +239,38 @@ App = {
         }
         else {
             App.setLoading(true)
-            App.proposals = await App.e_vot.getProposal(area)
+            proposals = await App.e_vot.getProposal(area)
             prop_tbody = $('#proposal_tb')
             prop_tbody.empty()
             for (i = 0; i < App.proposals.length; i++) {
                 tr = $("<tr></tr>")
                 th = $("<th></th>").text(i + 1)
                 th.attr("scope", "row")
-                td_name = $("<td></td>").text(App.to_string(App.proposals[i]["name"]))
-                td_party = $("<td></td>").text(App.to_string(App.proposals[i]["party"]))
-                td_vcount = $("<td></td>").text(App.proposals[i]["voteCount"])
+                td_name = $("<td></td>").text(App.to_string(proposals[i]["name"]))
+                td_party = $("<td></td>").text(App.to_string(proposals[i]["party"]))
+                td_vcount = $("<td></td>").text(proposals[i]["voteCount"])
                 tr.append(th, td_name, td_party, td_vcount)
                 prop_tbody.append(tr)
             }
             console.log(App.proposals[0])
             App.setLoading(false)
         }
+    },
+    change_state: async () => {
+        App.setLoading(true)
+        try {
+            test = await App.e_vot.changeState({ 'from': ethereum.selectedAddress })
+            console.log(test)
+            App.state = await App.e_vot.check_state()
+            App.state = App.state.toNumber()
+            console.log(App.state)
+            await App.load_state()
+        }
+        catch (error) {
+            console.log(error['message'])
+            window.alert(error['message'])
+        }
+        App.setLoading(false)
     }
 }
 
@@ -182,8 +280,16 @@ $(() => {
 
 const add_prop = document.getElementById("prop_add")
 console.log(add_prop)
-add_prop.addEventListener("click", App.add_prop_fun);
+add_prop.addEventListener("click", App.add_prop_fun)
 
 const show_prop = document.getElementById("Show_prop")
 console.log(show_prop)
-show_prop.addEventListener("click", App.get_prop);
+show_prop.addEventListener("click", App.get_prop)
+
+const btn_state = document.getElementById("btn_sts")
+console.log(btn_state)
+btn_state.addEventListener("click", App.change_state)
+
+const btn_res = document.getElementById("Show_res")
+console.log(btn_res)
+btn_res.addEventListener("click", App.load_result)

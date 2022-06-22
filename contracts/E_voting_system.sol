@@ -31,6 +31,7 @@ contract E_voting_system {
     }
     struct winner_in_area {
         bytes32 name;
+        bytes32 party;
         uint256 voteCount;
     }
 
@@ -230,6 +231,7 @@ contract E_voting_system {
         if (w.voteCount < p.voteCount) {
             w.name = p.name;
             w.voteCount = p.voteCount;
+            w.party = p.party;
             winner_per_area[sender.area] = w;
         }
     }
@@ -240,11 +242,11 @@ contract E_voting_system {
     function winnerNME_Vcount(string memory area)
         public
         view
-        returns (string memory, uint256)
+        returns (winner_in_area memory)
     {
         require(state == voting_state.close, "Voting process not close");
         winner_in_area memory w = winner_per_area[stringToBytes32(area)];
-        return (bytes32ToString(w.name), w.voteCount);
+        return (w);
     }
 
     function changeState() public {

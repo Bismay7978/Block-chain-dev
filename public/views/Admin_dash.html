@@ -135,16 +135,64 @@
                     <div class="container">
                         <div class="reg_vot mt-2 p-2">
                             <label class="voter_address">address</label>
-                            <button class="btn btn-success voter_approve_btn">Approve</button>
-                            <button class="btn btn-danger voter_reject">Reject</button>
+                            <button class="btn btn-success voter_approve_btn ml-2">Approve</button>
+                            <button class="btn btn-danger voter_reject ml-2">Reject</button>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane" id="status" role="tabpanel" aria-labelledby="status-tab">
-                    Change Status
+                    <div class="container">
+                        <Label class="status" id="sts">Hi</Label>
+                        <button type="button" class="btn btn-primary" id="btn_sts">Change Phase</button>
+                    </div>
                 </div>
                 <div class="tab-pane" id="result" role="tabpanel" aria-labelledby="result-tab">
-                    Result
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="form-group flex-fill">
+                            <label for="Area_list_1">Choose an area for getting winner details</label>
+                            <select class="custom-select mr-2" id="Area_list_3">
+                                <option value="" selected>Select Area</option>
+                                <option value="remuna">Remuna</option>
+                                <option value="balasore">Balasore</option>
+                            </select>
+                        </div>
+                        <div class="show_btn">
+                            <button type="button" class="btn btn-primary show"
+                                style="height: 38px; margin-bottom: 2px; bottom: 2px;" id="Show_res">Show</button>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Party</th>
+                                    <th scope="col">Vote Count</th>
+                                </tr>
+                            </thead>
+                            <tbody id=winer_tb>
+                                <!-- <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>BJD</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>BJP</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Larry</td>
+                                    <td>CONG</td>
+                                    <td>0</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
