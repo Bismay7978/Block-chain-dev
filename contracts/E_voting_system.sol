@@ -18,6 +18,7 @@ contract E_voting_system {
         bool is_authorized; // is voter is authorize to vote
         bool voted; // if true, that person already voted
         uint256 vote; // index of the voted proposal
+        bytes32 name;
         bytes32 area; // area of voter
         uint256 Aadhar; //Aadhar card number
     }
@@ -184,6 +185,7 @@ contract E_voting_system {
     function voter_reg(
         string memory email,
         string memory pass,
+        string memory name,
         uint256 Aadhar,
         string memory ara
     ) public check_status(voters[msg.sender], stringToBytes32(email), Aadhar) {
@@ -193,7 +195,8 @@ contract E_voting_system {
             voted: false,
             vote: 0,
             area: stringToBytes32(ara),
-            Aadhar: Aadhar
+            Aadhar: Aadhar,
+            name : stringToBytes32(name)
         });
         reg_voter_count_per_area[stringToBytes32(ara)] += 1;
         bytes32 em = stringToBytes32(email);
