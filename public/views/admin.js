@@ -242,7 +242,7 @@ App = {
             proposals = await App.e_vot.getProposal(area)
             prop_tbody = $('#proposal_tb')
             prop_tbody.empty()
-            for (i = 0; i < App.proposals.length; i++) {
+            for (i = 0; i < proposals.length; i++) {
                 tr = $("<tr></tr>")
                 th = $("<th></th>").text(i + 1)
                 th.attr("scope", "row")
@@ -252,7 +252,7 @@ App = {
                 tr.append(th, td_name, td_party, td_vcount)
                 prop_tbody.append(tr)
             }
-            console.log(App.proposals[0])
+            console.log(proposals[0])
             App.setLoading(false)
         }
     },

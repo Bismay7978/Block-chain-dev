@@ -50024,12 +50024,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x590E5b488C99a22960F74866EF1569BE09A036FE",
-      "transactionHash": "0x4521ad513f600cfe7746cd304401f57894bfcad94c0586aa5cfc8beacd27fa82"
+      "address": "0x8b4DaF8ED685778495643d1A3FD270e55e8dCA65",
+      "transactionHash": "0x1edda8105a1897796894776062b49b44b018e48a0c0a9c7583be9dc20e1fa11a"
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2022-06-23T10:01:17.266Z",
+  "updatedAt": "2022-06-23T14:50:59.329Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Implements voting process along with vote delegation",
