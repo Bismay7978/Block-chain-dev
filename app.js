@@ -19,6 +19,12 @@ app.get("/", (req, res) => {
 app.get("/admin", (req, res) => {
     res.sendFile(path.join(__dirname, './public/views/Admin_dash.html'))
 });
+app.get("/usr_reg", (req, res) => {
+    res.sendFile(path.join(__dirname, './public/views/user_reg.html'))
+})
+app.get("/usr_login", (req, res) => {
+    res.sendFile(path.join(__dirname, './public/views/usr_login.html'))
+})
 app.get("/logout", (req, res) => {
     res.redirect('/')
 });
