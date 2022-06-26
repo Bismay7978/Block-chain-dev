@@ -42,4 +42,18 @@ contract('E_voting_system', (accounts) => {
             console.log(submsg);
         }
     })
+
+    it('Admin_login', async () => {
+        try {
+            const result = await this.e_vot.chair_login("ranabismaykumar@gmail.com", "BiTu@7978");
+            console.log(result);
+        }
+        catch (error) { //test
+            error = String(error);
+            index = error.indexOf("Reason given:");
+            index += 13;
+            submsg = error.substring(index, error.length - 1);
+            console.log(submsg);
+        }
+    })
 })

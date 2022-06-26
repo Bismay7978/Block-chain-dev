@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
+pragma experimental ABIEncoderV2;
 
 /**
  * @title Ballot
@@ -324,13 +325,13 @@ contract E_voting_system {
     }
 
     function chair_login(string memory email, string memory pass)
-        private
+        public
         view
         returns (bool)
     {
         return
-            chair_email == stringToBytes32(email) &&
-            chair_pass == stringToBytes32(pass);
+            (chair_email == stringToBytes32(email) &&
+            chair_pass == stringToBytes32(pass));
     }
 
     function getProposal(string memory area)
