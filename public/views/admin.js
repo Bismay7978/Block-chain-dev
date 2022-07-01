@@ -31,7 +31,8 @@ App = {
             } catch (error) {
                 // User denied account access...
                 // window.alert(error["message"]);
-                window.alert(error);
+                if (error.code != -32002)
+                    window.alert(error.message);
             }
         }
         // Legacy dapp browsers...
@@ -82,15 +83,27 @@ App = {
             else if (this.balance != '0') {
                 try {
                     // web3.eth.sendTransaction({ 'from': App.accounts[0] })
-                    await App.e_vot.addProposal(name, party, area, { 'from': ethereum.selectedAddress }).then(console.log);
+                    await App.e_vot.addProposal(name, party, area, { 'from': ethereum.selectedAddress }).then((transaction) => {
+                        if (transaction.tx != undefined || transaction.tx != "" || transaction.tx != null) {
+                            window.alert('Proposal added successfully')
+                        }
+                        else {
+                            window.alert('Getting some Error please try again\n' + String(transaction))
+                        }
+                        console.log(transaction.tx)
+                    }).catch((error) => {
+                        console.log(error['message'])
+                        error = String(error)
+                        idx = error.indexOf('.')
+                        js = JSON.parse(error.substring(idx + 1, error.length))
+                        window.alert(js.message)
+                        console.log(js)
+                    })
+                    // console.log(ad_prop)
                 }
                 catch (error) {
-                    error = json(error);
-                    index = error.indexOf("Reason given:");
-                    index += 13;
-                    submsg = error.substring(index, error.length - 1);
-                    window.alert(submsg);
-                    console.log(submsg);
+                    window.alert(error);
+                    console.log(error);
                 }
             }
             else {
@@ -149,12 +162,12 @@ App = {
     },
     load_result: async () => {
         console.log(App.state)
-        if (App.state === 3) {
-            area = $(Area_list_3).val()
-            if (!area) {
-                window.alert("Please select valid area")
-            }
-            else {
+        area = $(Area_list_3).val()
+        if (!area) {
+            window.alert("Please select valid area")
+        }
+        else {
+            if (App.state === 3) {
                 winer = await App.e_vot.winnerNME_Vcount(area)
                 wn_tbody = $('#winer_tb')
                 wn_tbody.empty()
@@ -167,9 +180,10 @@ App = {
                 tr.append(th, td_name, td_party, td_vcount)
                 wn_tbody.append(tr)
             }
-        }
-        else {
-            window.alert("voting phase not ended yet")
+            else {
+                window.alert("voting phase not ended yet")
+            }
+
         }
     }
     ,
@@ -259,7 +273,22 @@ App = {
     change_state: async () => {
         App.setLoading(true)
         try {
-            test = await App.e_vot.changeState({ 'from': ethereum.selectedAddress })
+            test = await App.e_vot.changeState({ 'from': ethereum.selectedAddress }).then((transaction) => {
+                if (transaction.tx != undefined || transaction.tx != "" || transaction.tx != null) {
+                    window.alert('Phase change successfully')
+                }
+                else {
+                    window.alert('Getting some Error please try again\n' + String(transaction))
+                }
+                console.log(transaction.tx)
+            }).catch((error) => {
+                console.log(error['message'])
+                error = String(error)
+                idx = error.indexOf('.')
+                js = JSON.parse(error.substring(idx + 1, error.length))
+                window.alert(js.message)
+                console.log(js)
+            })
             console.log(test)
             App.state = await App.e_vot.check_state()
             App.state = App.state.toNumber()

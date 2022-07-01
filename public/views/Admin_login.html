@@ -21,6 +21,7 @@
             <h2 class="ct-section-head">
                 ADMIN LOGIN
             </h2>
+
             <div class="row contact-fields">
                 <div class="col-md-8 left-form">
                     <form action="/admin" method="post">
@@ -40,6 +41,11 @@
             </div>
         </div>
     </div>
+    <% if (er) { %>
+        <script>
+            window.alert("<%=msg%>")
+        </script>
+        <% } %>
 </body>
 
 </html>

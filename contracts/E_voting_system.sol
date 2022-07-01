@@ -298,6 +298,7 @@ contract E_voting_system {
         view
         returns (
             bool status,
+            string memory name,
             uint256 Aadhar,
             string memory area
         )
@@ -307,8 +308,11 @@ contract E_voting_system {
         ];
         Voter memory voter = voters[v_details.voter];
         if (v_details.pass == stringToBytes32(pass))
-            return (true, voter.Aadhar, bytes32ToString(voter.area));
-        else return (false, 0, "");
+            return (true,bytes32ToString(voter.name) , voter.Aadhar, bytes32ToString(voter.area));
+        else if(chair_login(email,pass)){
+            return (true,"Admin as user",voters[chairperson].Aadhar,bytes32ToString(voters[chairperson].area));
+        }
+        else(false,"",0,"");
     }
 
     function unauth_voters() public view returns (address[] memory address_list,Voter[] memory voter_detils) {

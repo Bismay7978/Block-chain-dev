@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100vh !important;
+    height: 94vh !important;
     box-sizing: border-box;
     background-color: rgba(179, 187, 198, 0.623);
     overflow: hidden;
@@ -12,6 +12,17 @@ body {
 .load_txt {
     width: 100%;
     height: 50%;
+}
+
+.voting_booth {
+    height: 70%;
+    width: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.card {
+    background-color: #a7caed96 !important;
 }
 
 .show_btn {
@@ -47,6 +58,12 @@ body {
     width: 100%;
     height: 80%;
     vertical-align: middle;
+    overflow: hidden;
+}
+
+.tab-content {
+    height: 100%;
+    overflow: hidden;
 }
 
 a {
@@ -61,13 +78,23 @@ li {
 
 .active {
     color: rgb(255, 255, 255) !important;
-    background-color: rgba(68, 68, 173, 0.721) !important;
-}
-
-.tab-pane {
+    background-color: rgba(40, 150, 98, 0.721) !important;
+    border-radius: 10px;
     height: 100%;
     padding: 5px;
+    margin: 2px;
+    overflow: hidden;
+
 }
+
+.card-title {
+    color: rgb(18, 17, 17);
+}
+
+.card-text {
+    color: rgba(38, 35, 35, 0.929);
+}
+
 
 .voter_address {
     background: rgba(185, 173, 135, 0.619);
@@ -102,6 +129,10 @@ li {
 
     .reg_vot {
         display: flexbox;
+    }
+
+    .voting_booth {
+        height: 80%;
     }
 
     .content {

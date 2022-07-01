@@ -12,6 +12,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="./js/web3.min.js"></script>
+    <script src="./js/truffle-contract.min.js"></script>
     <title>Document</title>
 </head>
 
@@ -23,7 +25,7 @@
             </h2>
             <div class="row contact-fields">
                 <div class="col-md-8 left-form">
-                    <form onsubmit=App.reg>
+                    <form>
                         <div class="form-group">
                             <label class="sr-only" for="fname">First Name *</label>
                             <input class="required form-control" id="fname" name="fname" placeholder="First Name&nbsp;*"
@@ -62,7 +64,8 @@
                                 <option value="balasore">Balasore</option>
                             </select>
                         </div>
-                        <button class="btn btn-accent" type="submit">Submit</button>
+                        <button class="btn btn-accent"
+                        id="reg_btn" type="button">Submit</button>
                     </form>
                 </div>
             </div>
