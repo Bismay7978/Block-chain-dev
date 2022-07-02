@@ -8,6 +8,7 @@ App = {
         // await App.loadAccount()
         await App.loadContract()
         await App.render()
+        // await App.add_btn_event()
         // App.error_hendle()
     },
 
@@ -80,38 +81,65 @@ App = {
     load_result: async () => {
         console.log(App.state)
         if (App.state === 3) {
-            area = $(Area_list_3).val()
-            if (!area) {
-                window.alert("Please select valid area")
-            }
-            else {
-                winer = await App.e_vot.winnerNME_Vcount(area)
-                wn_tbody = $('#winer_tb')
-                wn_tbody.empty()
-                tr = $("<tr></tr>")
-                th = $("<th></th>").text(i + 1)
-                th.attr("scope", "row")
-                td_name = $("<td></td>").text(App.to_string(winer["name"]))
-                td_party = $("<td></td>").text(App.to_string(winer["party"]))
-                td_vcount = $("<td></td>").text(winer["voteCount"])
-                tr.append(th, td_name, td_party, td_vcount)
-                wn_tbody.append(tr)
-            }
-        }
-        else {
-            window.alert("voting phase not ended yet")
+            winer = await App.e_vot.winnerNME_Vcount(App.area).catch(err => {
+                console.log(error['message'])
+                error = String(error)
+                idx = error.indexOf('.')
+                js = JSON.parse(error.substring(idx + 1, error.length))
+                window.alert(js.message)
+                console.log(js)
+            })
+            console.log(winer)
+            wn_tbody = $('#winer_tb')
+            wn_tbody.empty()
+            tr = $("<tr></tr>")
+            th = $("<th></th>").text(1)
+            th.attr("scope", "row")
+            td_name = $("<td></td>").text(App.to_string(winer["name"]))
+            td_party = $("<td></td>").text(App.to_string(winer["party"]))
+            td_vcount = $("<td></td>").text(winer["voteCount"])
+            tr.append(th, td_name, td_party, td_vcount)
+            wn_tbody.append(tr)
         }
     }
     ,
     get_state: async () => {
         state = await App.e_vot.check_state()
         App.state = state.toNumber()
-    }
-    ,
+    },
+    fatct_data: async () => {
+        await fetch('/data').then(res => res.json()).then(dt => {
+            console.log(dt)
+            App.email = dt.email
+            App.aadhar = dt.aadhar
+            App.area = dt.area
+        }).catch(err => console.log(err))
+    },
+    load_state: async () => {
+        lable_state = $('#phase')
+        console.log(lable_state)
+        console.log(App.state)
+        lable_state.empty()
+        switch (App.state) {
+            case 0:
+                lable_state.text("Registration on going")
+                break
+            case 1:
+                lable_state.text("Validation on going")
+                break
+            case 2:
+                lable_state.text("Voting on going")
+                break
+            case 3:
+                lable_state.text("voting closed")
+        }
+    },
     load_prop: async () => {
-        fetch('/area').then(res => res.json()).then(async (data) => {
-            console.log(data.area)
-            App.area = data.area;
+
+        if (App.state == 2) {
+            if (!App.area) {
+                await App.fatct_data()
+            }
             prop_array = await App.e_vot.getProposal(App.area).catch(error => {
                 error = String(error)
                 idx = error.indexOf('.')
@@ -120,10 +148,11 @@ App = {
                 console.log(js)
             })
             console.log(prop_array)
+            // var i = 0;
             container = $('#voting_both')
             container.empty()
-            prop_array.forEach(prop => {
-                console.log(prop)
+            for (var i = 0; i < prop_array.length; i++) {
+                console.log(prop_array[i])
                 card_div = $("<div></div>");
                 card_div.addClass("card p-3 m-3 shadow-lg");
                 card_div.css({ "width": "18rem" });
@@ -134,22 +163,32 @@ App = {
                 div_card_body.addClass("card-body");
                 h_tag = $("<h5></h5>");
                 h_tag.addClass("card-title");
-                h_tag.text(App.to_string(prop.name));
+                h_tag.text(App.to_string(prop_array[i].name));
                 sub_title = $("<h6></h6>");
                 sub_title.addClass("card-subtitle mb-2 text-muted");
-                sub_title.text("Party : " + App.to_string(prop.party))
+                sub_title.text("Party : " + App.to_string(prop_array[i].party));
                 btn = $("<button></button>");
-                btn.addClass("btn btn-primary");
+                btn.addClass("btn btn-primary card_btn");
                 btn.attr("type", "button");
-                btn.text("PRESS TO VOTE ME")
+                btn.text("PRESS TO VOTE ME");
+                // btn.bind("click", (i) => {
+                //     console.log("HHi" + i)
+                // })
                 console.log(h_tag, sub_title, btn)
                 div_card_body.append(h_tag, sub_title, btn);
                 console.log(div_card_body)
                 card_div.append(img, div_card_body);
                 console.log(card_div)
                 container.append(card_div);
-            });
-        }).catch(error => window.alert(error))
+                // console.log(i)
+            }
+            App.add_btn_event()
+        }
+        else if (App.state > 2) {
+            h = $("#voting_ph")
+            h.empty()
+            h.text("Voting phase is over")
+        }
     }
     ,
     render: async () => {
@@ -161,8 +200,12 @@ App = {
         // Update app loading state
         App.setLoading(true)
         // Add events Tasks
+        await App.get_state()
+        await App.fatct_data()
         await App.load_prop()
+        await App.load_state()
         // Update loading state
+        await App.load_result()
         App.setLoading(false)
     },
     // error_hendle: () => {
@@ -187,11 +230,51 @@ App = {
             }
         }
         return str;
+    },
+    add_btn_event: () => {
+        const nodes = document.getElementsByClassName('card_btn');
+        console.log(nodes, nodes.length)
+
+        for (var i = 0; i < nodes.length; i++) {
+            console.log(nodes[i])
+            nodes[i].addEventListener('click', async function (i) {
+                if (!(App.email && App.aadhar)) {
+                    await App.fatct_data()
+                }
+                try {
+                    await App.e_vot.vote(App.email, App.aadhar, i, { 'from': ethereum.selectedAddress }).then(
+                        (transaction) => {
+                            if (transaction.tx != undefined || transaction.tx != "" || transaction.tx != null) {
+                                window.alert('Your vote has been casted')
+                            }
+                            else {
+                                window.alert('Getting some Error please try again\n' + String(transaction))
+                            }
+                            console.log(transaction.tx)
+                        }).catch((error) => {
+                            console.log(error['message'])
+                            error = String(error)
+                            idx = error.indexOf('.')
+                            js = JSON.parse(error.substring(idx + 1, error.length))
+                            window.alert(js.message)
+                            console.log(js)
+                        })
+                }
+                catch (error) {
+                    window.alert(error);
+                    console.log(error);
+                }
+            }.bind(null, i));
+            console.log(nodes[i])
+        }
+        console.log("Event are added successfully")
     }
 }
 
 $(() => {
     $(window).on('load', App.load);
+    // App.add_btn_event()
 })
 // var email = <%-eml%>
 //     console.log(email)
+

@@ -48,7 +48,7 @@
                             aria-controls="result" aria-selected="false">Show Result</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="LogOut-tab" href="/logout" style="cursor:pointer;">Log Out</a>
+                        <a class="nav-link" id="LogOut-tab" href="/admin_logout" style="cursor:pointer;">Log Out</a>
                     </li>
                 </ul>
             </div>
@@ -144,24 +144,56 @@
                     </form>
                 </div>
                 <div class="tab-pane" id="register" role="tabpanel" aria-labelledby="register-tab">
-                    <div class="container">
-                        <div class="reg_vot mt-2 p-2">
+                    <div class="container" id="register_tab">
+                        <h2 class="text-center">Please come here after the registration phase is over</h2>
+                        <!-- <div class="reg_vot mt-2 p-2">
                             <label class="voter_address">address</label>
                             <button class="btn btn-success voter_approve_btn ml-2">Approve</button>
                             <button class="btn btn-danger voter_reject ml-2">Reject</button>
-                        </div>
+                        </div> -->
+                    </div>
+                    <div class="" id="det">
+                        <table class="table table-dark" id="tb_det">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Aadhar</th>
+                                    <th scope="col">Area</th>
+                                </tr>
+                            </thead>
+                            <tbody id=tb_body>
+                                <!-- <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>BJD</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>BJP</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Larry</td>
+                                    <td>CONG</td>
+                                    <td>0</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="tab-pane" id="status" role="tabpanel" aria-labelledby="status-tab">
                     <div class="container">
-                        <Label class="status" id="sts">Hi</Label>
+                        <h2 class="text-center status" id="sts">Hi</h2>
                         <button type="button" class="btn btn-primary" id="btn_sts">Change Phase</button>
                     </div>
                 </div>
                 <div class="tab-pane" id="result" role="tabpanel" aria-labelledby="result-tab">
                     <div class="d-flex flex-row justify-content-between">
                         <div class="form-group flex-fill">
-                            <label for="Area_list_1">Choose an area for getting winner details</label>
+                            <label for="Area_list_3">Choose an area for getting winner details</label>
                             <select class="custom-select mr-2" id="Area_list_3">
                                 <option value="" selected>Select Area</option>
                                 <option value="remuna">Kalahandi</option>

@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="./static/views/contact-form.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./js/web3.min.js"></script>
     <script src="./js/truffle-contract.min.js"></script>
@@ -20,10 +21,12 @@
 <body>
     <div class="container">
         <div class="contact-section">
-            <h2 class="ct-section-head">
+
+            <h2 class="ct-section-head text-center">
                 USER REGISTRATION
             </h2>
-            <div class="row contact-fields">
+            <h2 class="text-center" id="loader" style="color:cornflowerblue ;">LOADING.......</h2>
+            <div class="row contact-fields" id="content">
                 <div class="col-md-8 left-form">
                     <form>
                         <div class="form-group">
@@ -44,28 +47,25 @@
                         <div class="form-group">
                             <label class="sr-only" for="contactPhone">Pass Woard *</label>
                             <input class="required form-control h5-phone" id="Pass1" name="pass1"
-                                placeholder="****&nbsp;*" type="password">
+                                placeholder="password&nbsp;*" type="password">
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="contactPhone">Retype Pass Woard *</label>
                             <input class="required form-control h5-phone" id="Pass2" name="pass2"
-                                placeholder="****&nbsp;*" type="password">
+                                placeholder="Retype password&nbsp;*" type="password">
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="contactPhone">Aadhar No. *</label>
                             <input class="required form-control h5-phone" id="Aadhar" name="adhar"
-                                placeholder="123456789&nbsp;*" type="text">
+                                placeholder="Enter Aadhar No.&nbsp;*" type="text">
                         </div>
                         <div class="form-group">
                             <label for="Area_list_2">Choose Area</label>
                             <select class="required custom-select" id="Area_list_2">
                                 <option selected>Select Area</option>
-                                <option value="remuna">Remuna</option>
-                                <option value="balasore">Balasore</option>
                             </select>
                         </div>
-                        <button class="btn btn-accent"
-                        id="reg_btn" type="button">Submit</button>
+                        <button class="btn btn-accent" id="reg_btn" type="button">Submit</button>
                     </form>
                 </div>
             </div>

@@ -18,11 +18,16 @@
 
 <body class="">
     <h2 class="text-center">Voter Dashboard</h2>
+    <h5 class="text-center">Login as <span style="color:darkslateblue;">
+            <%- eml %>
+        </span>
+    </h5>
     <div class="text-center" id="loader">
         <h2>Loading.......</h2>
     </div>
     <!-- Nav tabs -->
     <div class="d-flex align-items-center justify-content-center admin" id="content">
+        <span class="shadow" id="phase"></span>
         <div class="container d-flex flex-sm-column flex-row justify-content-between">
             <div class="tabs shadow p-1 bg-white rounded">
                 <ul class="nav nav-tabs flex-column flex-sm-row nav-fill font-weight-bold" id="admin_tabs"
@@ -40,7 +45,7 @@
                             aria-controls="result" aria-selected="false">Show Result</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="LogOut-tab" href="/admin_logout" style="cursor:pointer;">Log Out</a>
+                        <a class="nav-link" id="LogOut-tab" href="/logout" style="cursor:pointer;">Log Out</a>
                     </li>
                 </ul>
             </div>
@@ -49,7 +54,26 @@
                 <div class="tab-pane active" id="samary" role="tabpanel" aria-labelledby="samary-tab">
                     <div class="d-flex flex-row justify-content-between">
                         <div class="form-group flex-fill">
-                            <h1>Some samary</h1>
+                            <h2 class="text-center">Welcome</h2>
+                            <h3>Thank You for using our E-Voting web portal</h3>
+                            <ul>
+                                <li>The user registers for our service in registration phase</li>
+                                <li>After the registration phase is over we will switch to validation phase</li>
+                                <li>If the details entered by the user is authentic he will be authorised to cast vote
+                                </li>
+                            </ul>
+
+                            <h2>User Manual</h2>
+                            <ul>
+                                <li>When in voting phase the user needs to go to voting Area where user will be able to
+                                    view all the candidates available for that area </li>
+                                <li>In the voting area the user can select the candidate of his choice by clicking'PRESS
+                                    TO VOTE ME'</li>
+                                <li>After the voting phase is over user can go to the result section to view the result
+                                </li>
+                            </ul>
+
+
                         </div>
                     </div>
                 </div>
@@ -57,7 +81,8 @@
                     <h1 class="text-center">Voting Booth</h1>
                     <div class="d-flex align-content-between justify-content-around flex-wrap voting_booth"
                         id="voting_both">
-                        <div class="card p-3 m-3 shadow-lg" style="width: 18rem;">
+                        <h2 class="text-center" id="voting_ph">voting phase not started yet</h2>
+                        <!-- <div class="card p-3 m-3 shadow-lg" style="width: 18rem;">
                             <img src="..." class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Card title</h5>
@@ -94,7 +119,7 @@
                                     of the card's content.</p>
                                 <button type="button" class="btn btn-primary">Go somewhere</button>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="tab-pane" id="result" role="tabpanel" aria-labelledby="result-tab">
@@ -138,6 +163,19 @@
         </div>
     </div>
     <script src="/static/views/Voter.js"></script>
+    <!-- <script>
+        var nodes = document.getElementsByClassName('card_btn').length;
+        console.log(nodes)
+
+        for (var i = 0; i < nodes.length; i++) {
+            console.log(nodes[i])
+            nodes[i].addEventListener('click', function (i) {
+                console.log('You clicked element #' + i);
+            }.bind(null, i));
+            console.log(nodes[i])
+        }
+        console.log("Event are added successfully")
+    </script> -->
     <% if (eml) { %>
         <script>
             var email = "<%= eml %>"

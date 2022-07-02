@@ -7,7 +7,7 @@ App = {
         await App.loadWeb3()
         // await App.loadAccount()
         await App.loadContract()
-        // await App.render()
+        await App.render()
         // App.error_hendle()
     },
 
@@ -52,8 +52,21 @@ App = {
     //     // Set the current blockchain account
     //     App.accounts = await ethereum.request({ method: 'eth_accounts' })
     //     console.log(ethereum.selectedAddress)
-    // },
-
+    // }
+    setLoading: (boolean) => {
+        App.loading = boolean
+        const loader = $('#loader')
+        // console.log(loader);
+        const content = $('#content')
+        if (boolean) {
+            loader.show()
+            content.removeClass('d-flex')
+            content.hide()
+        } else {
+            loader.hide()
+            content.addClass('d-flex')
+        }
+    },
     loadContract: async () => {
         // Create a JavaScript version of the smart contract
         const e_vot = await $.getJSON('./json/E_voting_system.json')
@@ -62,6 +75,7 @@ App = {
 
         // Hydrate the smart contract with values from the blockchain
         App.e_vot = await App.contracts.E_vot.deployed()
+
     },
     // error_hendle: () => {
     //     chrome.runtime.onMessage.addListener(function (rq, sender, sendResponse) {
@@ -72,6 +86,35 @@ App = {
     //         // return true;  // uncomment this line to fix error
     //     });
     // }
+    render: async () => {
+        // Prevent double render
+        if (App.loading) {
+            return
+        }
+
+        // Update app loading state
+        App.setLoading(true)
+
+        // Add events Tasks
+        await App.load_cities()
+        // Update loading state
+        App.setLoading(false)
+    },
+    load_cities: async () => {
+        area_list = $('#Area_list_2')
+        await fetch('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json').then(res => res.json()).then(data => { //4013
+            // App.cities = []
+            data.forEach(city => {
+                if (city.state_id === 4013) {
+                    opt = $('<option></option>')
+                    opt.text(city.name)
+                    opt.attr('value', city.name)
+                    area_list.append(opt)
+                }
+            })
+            console.log(App.cities)
+        });
+    },
     to_string: (hex) => {
         var str = '';
         for (var n = 2; n < hex.length; n += 2) {

@@ -5,6 +5,7 @@ const app = express();
 const sqlite = require('sqlite3').verbose();
 const db = new sqlite.Database('./user_data.db');
 const session = require('express-session')
+const fetch = require('https')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,6 +35,8 @@ const truffle_contract = require('@truffle/contract');
 const { render } = require("ejs");
 var provider = new Web3.providers.HttpProvider('HTTP://127.0.0.1:7545');
 
+
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, './public/views/index.html'))
 });
@@ -55,10 +58,10 @@ app.post("/admin", async (req, res) => {
         res.render("Admin_login", { er: true, msg: "wrong credentials" })
     }
 });
-app.get('/area', (req, res) => {
+app.get('/data', (req, res) => {
     if (req.session.id) {
         console.log(res)
-        res.json({ area: req.session.area })
+        res.json({ email: req.session.Email, area: req.session.area, aadhar: req.session.usr_id })
         console.log(res)
     }
     else {
@@ -142,4 +145,5 @@ app.get("/admin_logout", (req, res) => {
 
 app.listen(8080, () => {
     console.log('Listening on port ' + 8080);
+    cities = fetch.request('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json', data => { console.log(data) }) //4013
 });

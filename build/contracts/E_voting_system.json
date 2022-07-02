@@ -51063,12 +51063,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x44851c724F33A06814bE3365BDAa4Ecba6c95301",
-      "transactionHash": "0x61cf0cf0969fde7d1b62ee17972eef1277e99fa1f2d987417d307a6407a0e913"
+      "address": "0xaE39dEcF8971120F2037B8F08b91fF340980Ba87",
+      "transactionHash": "0x6d144e5e78312406a49a8186fdfa2e7d209da5148266ccd30df45f4072bebc3e"
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2022-06-30T17:51:40.277Z",
+  "updatedAt": "2022-07-02T04:44:16.442Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Implements voting process along with vote delegation",
