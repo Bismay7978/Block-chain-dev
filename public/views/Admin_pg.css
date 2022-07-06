@@ -103,6 +103,11 @@ li {
     vertical-align: middle;
 }
 
+#register_tab {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
 @media screen and (max-width: 576px) {
     .tabs {
         width: 40%;

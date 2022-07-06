@@ -1,4 +1,5 @@
-
+const serviceID = 'default_service';
+const templateID = 'template_6kfri9k';
 App = {
     loading: false,
     contracts: {},
@@ -106,6 +107,7 @@ App = {
     get_state: async () => {
         state = await App.e_vot.check_state()
         App.state = state.toNumber()
+        console.log(App.state)
     },
     fatct_data: async () => {
         await fetch('/data').then(res => res.json()).then(dt => {
@@ -201,9 +203,9 @@ App = {
         App.setLoading(true)
         // Add events Tasks
         await App.get_state()
+        await App.load_state()
         await App.fatct_data()
         await App.load_prop()
-        await App.load_state()
         // Update loading state
         await App.load_result()
         App.setLoading(false)
@@ -246,6 +248,12 @@ App = {
                         (transaction) => {
                             if (transaction.tx != undefined || transaction.tx != "" || transaction.tx != null) {
                                 window.alert('Your vote has been casted')
+                                emailjs.send(serviceID, templateID, { from_name: "E-voting", g_mail: App.email, message: "Your vote has been casted.Thanks for your vote", to_mail: App.email })
+                                    .then(() => {
+                                        console.log('Sent!');
+                                    }, (err) => {
+                                        console.log(JSON.stringify(err));
+                                    });
                             }
                             else {
                                 window.alert('Getting some Error please try again\n' + String(transaction))

@@ -101,19 +101,40 @@ App = {
         App.setLoading(false)
     },
     load_cities: async () => {
-        area_list = $('#Area_list_2')
-        await fetch('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json').then(res => res.json()).then(data => { //4013
-            // App.cities = []
-            data.forEach(city => {
-                if (city.state_id === 4013) {
+        var headers = new Headers();
+        headers.append("X-CSCAPI-KEY", "UUxRbU92YUJudEh5SEZEWERvZXpMT2xXMjN2YklpNjgzaDBMNHFkdA==");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow'
+        };
+
+        fetch("https://api.countrystatecity.in/v1/countries/IN/states/OR/cities", requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                area_list = $('#Area_list_2')
+                data.forEach(city => {
                     opt = $('<option></option>')
                     opt.text(city.name)
                     opt.attr('value', city.name)
                     area_list.append(opt)
-                }
+                })
             })
-            console.log(App.cities)
-        });
+            .catch(error => console.log('error', error));
+        // area_list = $('#Area_list_2')
+        // await fetch('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json').then(res => res.json()).then(data => { //4013
+        //     // App.cities = []
+        //     data.forEach(city => {
+        //         if (city.state_id === 4013) {
+        //             opt = $('<option></option>')
+        //             opt.text(city.name)
+        //             opt.attr('value', city.name)
+        //             area_list.append(opt)
+        //         }
+        //     })
+        //     // console.log(App.cities)
+        // });
     },
     to_string: (hex) => {
         var str = '';
@@ -136,19 +157,30 @@ App = {
         lname = $('#lname').val()
         full_name = fname + ' ' + lname
         email = $('#Email').val()
-        aadhar = $('#Aadhar').val()
+        aadhaar = $('#Aadhaar').val()
         area = $('#Area_list_2').val()
-        if (!(fname && lname && email && aadhar && area && pass1 && pass2)) {
+        if (!(fname && lname && email && aadhaar && area && pass1 && pass2)) {
             window.alert("Find some empty value please fill it properly")
         }
         else if (pass1 != pass2) {
             window.alert("Password not same")
         }
+        else if (aadhaar.length != 12) {
+            window.alert("Enter 12 digit Aadhaar No.")
+        }
         else {
-            console.log(full_name, email, pass1, aadhar, area)
-            await App.e_vot.voter_reg(email, pass1, full_name, aadhar, area, { 'from': ethereum.selectedAddress }).then(transaction => {
+            console.log(full_name, email, pass1, aadhaar, area)
+            await App.e_vot.voter_reg(email, pass1, full_name, aadhaar, area, { 'from': ethereum.selectedAddress }).then(transaction => {
                 if (transaction.tx != undefined || transaction.tx != "" || transaction.tx != null) {
                     window.alert('You have successfully registered')
+                    const serviceID = 'default_service';
+                    const templateID = 'template_6kfri9k';
+                    emailjs.send(serviceID, templateID, { from_name: "E-voting", g_mail: email, message: "You are successfuly registered", to_mail: email })
+                        .then(() => {
+                            console.log('Sent!');
+                        }, (err) => {
+                            console.log(JSON.stringify(err));
+                        });
                 }
                 else {
                     window.alert('Getting some Error please try again\n' + String(transaction))
@@ -168,7 +200,20 @@ App = {
 }
 
 $(() => {
-    $(window).on('load', App.load);
+    console.log(navigator.onLine);
+    // var slowload = window.setTimeout(() => {
+    //     alert("connection is poor please check your network")
+    // }, 10)
+    if (!navigator.onLine) {
+        window.alert("You are Offline please check your connection")
+        App.setLoading(true)
+    }
+    else {
+        $(window).on('load', async () => {
+            // window.clearTimeout(slowload)
+            await App.load()
+        });
+    }
 })
 
 const reg_btn = document.getElementById('reg_btn')

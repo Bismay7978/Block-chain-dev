@@ -61,14 +61,7 @@
                             <label for="Area_list_1">Choose Area</label>
                             <select class="custom-select mr-2" id="Area_list_1">
                                 <option value="" selected>Select Area</option>
-                                <option value="remuna">Kalahandi</option>
-                                <option value="balasore">Balasore</option>
-                                <option value="bhadrak">Bhadrak</option>
-                                <option value="bhubaneswar">Bhubaneswar</option>
-                                <option value="sambalpure">Sambalpure</option>
-                                <option value="cuttack">Cuttack</option>
-                                <option value="rourkela">Rourkela</option>
-                                <option value="brahmapur">Brahmapur</option>
+
                             </select>
                         </div>
                         <div class="show_btn">
@@ -124,20 +117,14 @@
                                 <option value="BJP">BJP</option>
                                 <option value="CONG">CONG</option>
                                 <option value="COMUNI">COMUNI</option>
+                                <optino value="Aam admi party">Aam admi party</optino>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="Area_list_2">Choose Area</label>
                             <select class="custom-select" id="Area_list_2">
                                 <option value="" selected>Select Area</option>
-                                <option value="remuna">Kalahandi</option>
-                                <option value="balasore">Balasore</option>
-                                <option value="bhadrak">Bhadrak</option>
-                                <option value="bhubaneswar">Bhubaneswar</option>
-                                <option value="sambalpure">Sambalpure</option>
-                                <option value="cuttack">Cuttack</option>
-                                <option value="rourkela">Rourkela</option>
-                                <option value="brahmapur">Brahmapur</option>
+
                             </select>
                         </div>
                         <button type="button" class="btn btn-primary" id="prop_add">ADD</button>
@@ -145,7 +132,7 @@
                 </div>
                 <div class="tab-pane" id="register" role="tabpanel" aria-labelledby="register-tab">
                     <div class="container" id="register_tab">
-                        <h2 class="text-center">Please come here after the registration phase is over</h2>
+                        <h2 class="text-center status">Please come here after the registration phase is over</h2>
                         <!-- <div class="reg_vot mt-2 p-2">
                             <label class="voter_address">address</label>
                             <button class="btn btn-success voter_approve_btn ml-2">Approve</button>
@@ -196,14 +183,7 @@
                             <label for="Area_list_3">Choose an area for getting winner details</label>
                             <select class="custom-select mr-2" id="Area_list_3">
                                 <option value="" selected>Select Area</option>
-                                <option value="remuna">Kalahandi</option>
-                                <option value="balasore">Balasore</option>
-                                <option value="bhadrak">Bhadrak</option>
-                                <option value="bhubaneswar">Bhubaneswar</option>
-                                <option value="sambalpure">Sambalpure</option>
-                                <option value="cuttack">Cuttack</option>
-                                <option value="rourkela">Rourkela</option>
-                                <option value="brahmapur">Brahmapur</option>
+
                             </select>
                         </div>
                         <div class="show_btn">
@@ -248,6 +228,11 @@
         </div>
     </div>
     <script src="./static/views/admin.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script type="text/javascript">
+        emailjs.init('SClvF54g75hD3DKKR')
+    </script>
 </body>
 
 </html>

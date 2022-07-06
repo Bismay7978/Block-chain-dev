@@ -145,5 +145,4 @@ app.get("/admin_logout", (req, res) => {
 
 app.listen(8080, () => {
     console.log('Listening on port ' + 8080);
-    cities = fetch.request('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json', data => { console.log(data) }) //4013
 });

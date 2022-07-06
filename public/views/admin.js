@@ -1,4 +1,5 @@
-
+const serviceID = 'default_service';
+const templateID = 'template_6kfri9k';
 App = {
     loading: false,
     contracts: {},
@@ -145,11 +146,18 @@ App = {
         approve_btns = document.getElementsByClassName('voter_approve_btn')
         reject_btns = document.getElementsByClassName('voter_reject')
         show_btns = document.getElementsByClassName('show_dt')
-        for (var i = 0; i < approve_btns.length; i++) {
+        for (var i = 0, j = 0; i < approve_btns.length; i++) {
             approve_btns[i].addEventListener("click", async function (i) {
+                console.log(App.to_string(App.unauth_voters[0][i]), i)
                 await App.e_vot.giveRightToVote(App.unauth_voters[0][i], { 'from': ethereum.selectedAddress }).then(transaction => {
                     if (transaction.tx != undefined || transaction.tx != "" || transaction.tx != null) {
-                        window.alert('Rights for votering have been given to ' + App.unauth_voters[0][i] + " Account")
+                        window.alert('Rights for votering have been given to ' + App.to_string(App.unauth_voters[0][i]) + " Account")
+                        emailjs.send(serviceID, templateID, { from_name: "E-voting", g_mail: App.to_string(App.unauth_voters[0][i]), message: "You are authorised to vote", to_mail: App.to_string(App.unauth_voters[0][i]) })
+                            .then(() => {
+                                console.log('Sent!');
+                            }, (err) => {
+                                console.log(JSON.stringify(err));
+                            });
                         approve_btns[i].parentNode.remove()
                     }
                     else {
@@ -157,8 +165,8 @@ App = {
                     }
                     console.log(transaction.tx)
                 }).catch(err => {
-                    console.log(error['message'])
-                    error = String(error)
+                    console.log(err['message'])
+                    error = String(err)
                     idx = error.indexOf('.')
                     js = JSON.parse(error.substring(idx + 1, error.length))
                     window.alert(js.message)
@@ -167,6 +175,12 @@ App = {
             }.bind(null, i))
 
             reject_btns[i].addEventListener("click", function (i) {
+                emailjs.send(serviceID, templateID, { from_name: "E-voting", g_mail: App.to_string(App.unauth_voters[0][i]), message: "You are rejected to give vote", to_mail: App.to_string(App.unauth_voters[0][i]) })
+                    .then(() => {
+                        console.log('Sent!');
+                    }, (err) => {
+                        console.log(JSON.stringify(err));
+                    });
                 reject_btns[i].parentNode.remove()
             }.bind(null, i))
 
@@ -185,6 +199,7 @@ App = {
                 det.append(tr)
             }.bind(null, i))
 
+
         }
     }
     ,
@@ -195,8 +210,12 @@ App = {
         if (App.state === 1) {
             container.empty()
             await App.get_unauth_voters()
+            email = []
+            voters = []
             for (i = 0; i < App.unauth_voters[1].length; i++) {
                 if (!App.unauth_voters[1][i].is_authorized) {
+                    email.push(App.unauth_voters[0][i])
+                    voters.push(App.unauth_voters[1][i])
                     adress = $("<h5></h5>")
                     div = $("<div></div>")
                     btn_det = $("<button></button>")
@@ -205,7 +224,7 @@ App = {
                     div.addClass("reg_vot mt-2 p-2 d-flex justify-content-between")
                     div.attr('id', i)
                     adress.addClass("voter_address text-wrap shadow")
-                    adress.text(App.unauth_voters[0][i])
+                    adress.text(App.to_string(App.unauth_voters[0][i]))
                     btn_det.addClass("btn btn-primary show_dt shadow")
                     btn_det.text("Show")
                     btn_ap.addClass("btn btn-success voter_approve_btn ml-2 shadow")
@@ -213,16 +232,20 @@ App = {
                     btn_rej.addClass("btn btn-danger voter_reject ml-2 shadow")
                     btn_rej.text("Reject")
                     div.append(adress, btn_det, btn_ap, btn_rej)
+                    btn_det.bind('click',)
                     container.append(div)
                 }
             }
+            App.emails = App.unauth_voters[0]
+            App.unauth_voters[0] = email
+            App.unauth_voters[1] = voters
             await App.reg_ph_btn_evnt()
             $('#tb_det').show()
 
         }
         else if (App.state > 1) {
             container.empty()
-            container.append('<h2 class = "text-center">Validation Phase is Over</h2>')
+            container.append('<h2 class = "text-center status">Validation Phase is Over</h2>')
         }
     },
     load_result: async () => {
@@ -275,23 +298,33 @@ App = {
     }
     ,
     load_cities: async () => {
+        var headers = new Headers();
+        headers.append("X-CSCAPI-KEY", "UUxRbU92YUJudEh5SEZEWERvZXpMT2xXMjN2YklpNjgzaDBMNHFkdA==");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow'
+        };
         area_list_1 = $('#Area_list_1')
         area_list_2 = $('#Area_list_2')
         area_list_3 = $('#Area_list_3')
-        await fetch('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/cities.json').then(res => res.json()).then(data => { //4013
+
+        await fetch("https://api.countrystatecity.in/v1/countries/IN/states/OR/cities", requestOptions).then(res => res.json()).then(data => { //4013
             // App.cities = []
             data.forEach(city => {
-                if (city.state_id === 4013) {
-                    opt = $('<option></option>')
-                    opt.text(city.name)
-                    opt.attr('value', city.name)
-                    area_list_1.append(opt)
-                    area_list_2.append(opt)
-                    area_list_3.append(opt)
-                }
+                opt1 = $('<option></option>')
+                opt1.text(city.name)
+                opt1.attr('value', city.name)
+                opt2 = opt1.clone()
+                opt3 = opt1.clone()
+                area_list_1.append(opt1)
+                area_list_2.append(opt2)
+                area_list_3.append(opt3)
             })
-            console.log(App.cities)
-        });
+            // console.log(App.cities)
+        }).catch(e => console.log(e));
+
     },
     render: async () => {
         // Prevent double render
@@ -304,9 +337,8 @@ App = {
         await App.load_state()
         await App.load_unauth_voters()
         console.log(App.state)
-        await App.load_cities()
         // Add events Tasks
-
+        await App.load_cities()
         // Update loading state
         App.setLoading(false)
     },
@@ -358,11 +390,33 @@ App = {
         }
     },
     change_state: async () => {
-        App.setLoading(true)
         try {
-            test = await App.e_vot.changeState({ 'from': ethereum.selectedAddress }).then((transaction) => {
+            if (!App.emails) {
+                App.emails = await App.e_vot.get_emails().catch(e => console.log(e))
+            }
+            console.log(App.emails)
+            test = await App.e_vot.changeState({ 'from': ethereum.selectedAddress }).then(async (transaction) => {
                 if (transaction.tx != undefined || transaction.tx != "" || transaction.tx != null) {
                     window.alert('Phase change successfully')
+                    await App.render()
+                    var state = ""
+                    if (App.state === 1) {
+                        state = "validation"
+                    }
+                    else if (App.state === 2) {
+                        state = "voting"
+                    }
+                    else if (App.state === 3) {
+                        state = "cloesd & result declared"
+                    }
+                    for (var i = 0; i < App.emails.length; i++) {
+                        emailjs.send(serviceID, templateID, { from_name: "E-voting", g_mail: App.to_string(App.emails[i]), message: state + " going on", to_mail: App.to_string(App.emails[i]) })
+                            .then(() => {
+                                console.log('Sent!');
+                            }, (err) => {
+                                console.log(JSON.stringify(err));
+                            });
+                    }
                 }
                 else {
                     window.alert('Getting some Error please try again\n' + String(transaction))
@@ -370,6 +424,7 @@ App = {
                 console.log(transaction.tx)
             }).catch((error) => {
                 console.log(error['message'])
+                console.log(JSON.stringify(error))
                 error = String(error)
                 idx = error.indexOf('.')
                 js = JSON.parse(error.substring(idx + 1, error.length))
@@ -377,20 +432,29 @@ App = {
                 console.log(js)
             })
             console.log(test)
-            await App.load_state()
             console.log(App.state)
-            await App.load_unauth_voters()
         }
         catch (error) {
             console.log(error['message'])
             window.alert(error['message'])
         }
-        App.setLoading(false)
     }
 }
 
 $(() => {
-    $(window).on('load', App.load);
+    // var slowload = window.setTimeout(()=>{
+    //     alert("connection is poor please check your network")
+    // },100)
+    if (!navigator.onLine) {
+        window.alert("You are Offline please check your connection")
+        App.setLoading(true)
+    }
+    else {
+        $(window).on('load', async () => {
+            // window.clearTimeout(slowload)
+            await App.load()
+        });
+    }
 })
 
 const add_prop = document.getElementById("prop_add")

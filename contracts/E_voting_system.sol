@@ -49,7 +49,8 @@ contract E_voting_system {
     }
 
     voting_state private state;
-    address[] voter_address;
+    // address[] voter_address;
+    bytes32[] private email_array;
     mapping(address => Voter) private voters;
     mapping(bytes32 => Proposal[]) public area_proposal;
     mapping(bytes32 => uint256) private reg_voter_count_per_area;
@@ -93,7 +94,7 @@ contract E_voting_system {
         _;
     }
 
-    modifier check_for_right(address voter) {
+    modifier check_for_right(bytes32 email) {
         require(
             msg.sender == chairperson,
             "Only chairperson can give right to vote."
@@ -102,9 +103,9 @@ contract E_voting_system {
             state == voting_state.validation,
             "Validation process has not been started"
         );
-        require(voters[voter].is_reg, "voter is not register yet");
-        require(!voters[voter].voted, "The voter already voted.");
-        require(!voters[voter].is_authorized,"The voter is alredy authorized");
+        require(voters[login_details[email].voter].is_reg, "voter is not register yet");
+        require(!voters[login_details[email].voter].voted, "The voter already voted.");
+        require(!voters[login_details[email].voter].is_authorized,"The voter is alredy authorized");
         _;
     }
 
@@ -174,12 +175,14 @@ contract E_voting_system {
     }
 
     /**
-     * @dev Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
-     * @param voter address of voter
+     * Give 'voter' the right to vote on this ballot. May only be called by 'chairperson'.
+     * voter address of voter
      */
-
-    function giveRightToVote(address voter) public check_for_right(voter) {
-        voters[voter].is_authorized = true;
+    function get_emails() public view returns(bytes32[] memory){
+        return email_array;
+    }
+    function giveRightToVote(bytes32 email) public check_for_right(email) {
+        voters[login_details[email].voter].is_authorized = true;
     }
 
     // This function is used by the voter to register yourself
@@ -203,7 +206,8 @@ contract E_voting_system {
         bytes32 em = stringToBytes32(email);
         email_validation[em] = true;
         Aadhar_validation[Aadhar] = true;
-        voter_address.push(msg.sender);
+        // voter_address.push(msg.sender);
+        email_array.push(em);
         Voter_login_details memory vrdt;
         vrdt.pass = stringToBytes32(pass);
         vrdt.voter = msg.sender;
@@ -315,16 +319,16 @@ contract E_voting_system {
         else(false,"",0,"");
     }
 
-    function unauth_voters() public view returns (address[] memory address_list,Voter[] memory voter_detils) {
+    function unauth_voters() public view returns (bytes32[] memory email_list,Voter[] memory voter_details) {
         require(
             msg.sender == chairperson,
             "Only Chair person have right to call this function"
         );
-        address_list = new address[](voter_address.length);
-        voter_detils = new Voter[](voter_address.length);
-        for(uint i=0;i<voter_address.length;i++){
-            address_list[i] = voter_address[i];
-            voter_detils[i] = voters[voter_address[i]];
+        email_list = new bytes32[](email_array.length);
+        voter_details = new Voter[](email_array.length);
+        for(uint i=0;i<email_array.length;i++){
+            email_list[i] = email_array[i];
+            voter_details[i] = voters[login_details[email_array[i]].voter];
         }
     }
 
