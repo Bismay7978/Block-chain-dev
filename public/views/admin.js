@@ -309,6 +309,7 @@ App = {
         area_list_1 = $('#Area_list_1')
         area_list_2 = $('#Area_list_2')
         area_list_3 = $('#Area_list_3')
+        area_list_4 = $('#Area_list_4')
 
         await fetch("https://api.countrystatecity.in/v1/countries/IN/states/OR/cities", requestOptions).then(res => res.json()).then(data => { //4013
             // App.cities = []
@@ -318,9 +319,11 @@ App = {
                 opt1.attr('value', city.name)
                 opt2 = opt1.clone()
                 opt3 = opt1.clone()
+                opt4 = opt1.clone()
                 area_list_1.append(opt1)
                 area_list_2.append(opt2)
                 area_list_3.append(opt3)
+                area_list_4.append(opt4)
             })
             // console.log(App.cities)
         }).catch(e => console.log(e));
@@ -389,6 +392,39 @@ App = {
             App.setLoading(false)
         }
     },
+    load_total_voters: async () => {
+        opt = $('#Area_list_4').val()
+        t_body = $('#voter_count')
+        t_body.empty()
+        if (opt) {
+            voter_count = await App.e_vot.voter_count(opt).catch(error => {
+                console.log(JSON.stringify(error))
+                error = String(error)
+                idx = error.indexOf('.')
+                js = JSON.parse(error.substring(idx + 1, error.length))
+                window.alert(js.message)
+                console.log(js)
+            })
+
+            vote_count = await App.e_vot.vote_count(opt).catch(error => {
+                console.log(JSON.stringify(error))
+                error = String(error)
+                idx = error.indexOf('.')
+                js = JSON.parse(error.substring(idx + 1, error.length))
+                window.alert(js.message)
+                console.log(js)
+            })
+            tr = $('<tr></tr>')
+            td1 = $('<td></td>')
+            td2 = td1.clone()
+            td1.text(voter_count)
+            td2.text(vote_count)
+            tr.append(td1, td2)
+            t_body.append(tr)
+            console.log(vote_count, voter_count)
+        }
+    }
+    ,
     change_state: async () => {
         try {
             if (!App.emails) {
@@ -472,3 +508,6 @@ btn_state.addEventListener("click", App.change_state)
 const btn_res = document.getElementById("Show_res")
 console.log(btn_res)
 btn_res.addEventListener("click", App.load_result)
+
+area_lst = document.getElementById("Area_list_4")
+area_lst.addEventListener('change', App.load_total_voters)

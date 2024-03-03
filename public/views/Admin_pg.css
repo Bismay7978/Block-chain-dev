@@ -108,6 +108,13 @@ li {
     overflow-x: hidden;
 }
 
+.voters {
+    width: 25%;
+    position: absolute;
+    right: 20px;
+    top: 0;
+}
+
 @media screen and (max-width: 576px) {
     .tabs {
         width: 40%;
